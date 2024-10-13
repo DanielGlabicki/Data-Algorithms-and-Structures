@@ -1,0 +1,35 @@
+W tej metodzie obliczenie wyznacznika macierzy kwadratowej o rozmiarze nxn (gdzie n>2) można sprowadzić do obliczenia wyznacznika macierzy o rozmiarze (n-1)x(n-1), której elementami są wartości wyznaczników macierzy 2x2 powstałych z odpowiednich elementów macierzy nxn (które już dają się trywialnie policzyć - liczenie 'na krzyż'). Powstaje tu klasyczny schemat obliczeń rekurencyjnych (obliczenie dla n wyraża się za pomocą obliczenia dla n-1). Zaimplementuj metodę Chio korzystając z reprezentacji macierzy w postaci klasy stworzonej w ćwiczeniu 1 oraz z poniższego wzoru:
+
+∣∣∣∣∣a1,1⋮an,1…⋱…a1,n⋮an,n∣∣∣∣∣=1an−21,1∣∣∣∣∣∣∣∣∣∣∣∣a1,1a2,1a1,2a2,2∣∣∣⋮∣∣∣a1,1an,1a1,2an,2∣∣∣…∣∣∣a1,1ai,1a1,jai,j∣∣∣…∣∣∣a1,1a2,1a1,na2,n∣∣∣⋮∣∣∣a1,1an,1a1,nan,n∣∣∣∣∣∣∣∣∣∣∣∣
+
+[ze strony: https://matematyka.pl/viewtopic.php?t=360950]
+
+Sprawdź wynik dla przykładowej macierzy:
+[
+
+[5 , 1 , 1 , 2 , 3],
+
+[4 , 2 , 1 , 7 , 3],
+
+[2 , 1 , 2 , 4 , 7],
+
+[9 , 1 , 0 , 7 , 0],
+
+[1 , 4 , 7 , 2 , 2]
+
+]
+
+(wynik: -1396)
+
+
+
+Zaproponuj i zaimplementuj rozwiązanie problemu przy liczeniu wyznacznika macierzy typu:
+  [
+     [0 , 1 , 1 , 2 , 3],
+     [4 , 2 , 1 , 7 , 3],
+     [2 , 1 , 2 , 4 , 7],
+     [9 , 1 , 0 , 7 , 0],
+     [1 , 4 , 7 , 2 , 2]
+    ]
+
+(wynik: -236)

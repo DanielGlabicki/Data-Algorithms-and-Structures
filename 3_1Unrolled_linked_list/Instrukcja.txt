@@ -1,0 +1,19 @@
+Zaimplementuj  rozwiniętą listę wiązaną (ang. unrolled linked list).  Zdefiniuj klasę reprezentującą element takiej listy - powinien on zawierać 'stałą' tablicę (stworzoną analogicznie jak w poprzednim zadaniu - jej rozmiar może być pamiętany w zmiennej globalnej), jej aktualne wypełnienie (czyli liczbę aktualnie znajdujących się w niej elementów) oraz wskazanie na następny element listy. Dodatkowo przydatne będą metody wstawiająca i usuwająca w miejscu wskazanym przez indeks (z przesunięciem pozostałych elementów).
+
+Następnie należy zaimplementować klasę reprezentującą listę, zawierającą metody:
+konstruktor tworzący pustą listę
+get - pobierająca daną spod podanego indeksu
+insert - wstawiająca daną w miejscu wskazanym przez podany indeks, przesuwając istniejące elementy w prawo;  jeżeli tablica elementu w którym ma nastąpić wstawienie jest pełna to do listy dokładany jest nowy element, połowa zapełnionej tablicy jest przenoszona do nowego elementu i wstawienie danej zachodzi albo w opróżnianym elemencie albo we wstawianym (w zależności gdzie 'wypada' miejsce wskazane przez indeks). Podanie indeksu większego od aktualnej liczby elementów listy skutkuje wstawieniem danej na końcu listy.
+delete - usuwająca  daną spod podanego indeksu - dodatkowo jeżeli tablica jest zapełniona mniej niż w połowie z następnego elementu listy jest do niej przenoszony pierwszy element tablicy; jeżeli to przeniesienie spowoduje, że zapełnienie tablicy w tym następnym elemencie spadnie poniżej połowy wtedy wszystkie je elementy są przenoszone do tablicy we wcześniejszym elemencie listy (tej, z której usuwana była dana), a element listy z pustą już tablicą jest usuwany.
+W celach testowych przydatna będzie funkcja/metoda wypisująca całą listę.
+UWAGA: Indeks o którym mowa w insert i delete dotyczy całej listy (czyli jest to numer elementu w liście a nie w którejś z tablic w elementach listy)
+ 
+Sprawdź działanie zaimplementowanej listy:
+niech zmienna reprezentująca rozmiar tablicy ma wartość 6
+utwórz pustą listę
+wywołaj w pętli metodę insert do wpisana do listy kolejno 9-ciu danych (kolejnych liczb od 1 do 9)
+użyj get do wypisania elementu listy o indeksie 4  (numeracja od 0)
+użyj insert do wstawienia do listy kolejnych 2-ch danych (10 i 11) pod indeksy: 1 i 8
+wypisz aktualny stan listy
+użyj delete do usunięcia z listy  danych spod indeksów 1 i 2
+wypisz aktualny stan listy

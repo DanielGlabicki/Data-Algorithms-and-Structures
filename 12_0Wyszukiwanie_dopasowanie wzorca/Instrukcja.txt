@@ -1,0 +1,102 @@
+1. Cel
+
+Celem ćwiczenie jest zapoznanie, analiza i implementacja “klasycznych” metod wyszukiwania wzorca:
+metoda naiwna,
+
+metoda Rabina-Karpa
+
+metoda Rabina-Karpa dla wielu wzorców + filtr Blooma (zadanie dodatkowe)
+
+2. Metoda naiwna
+
+Metoda naiwna to najprostsze podejście do wyszukiwania wzorca. Mając dany tekst S oraz wzorzec W, “przykładamy” wzorzec do początku S i sprawdzamy znak po znaku zgodność obu ciągów. Jeśli wystąpi różnica, to “przesuwamy” początek przeszukania o jeden znak i rozpoczynamy procedurę ponownie. Jeśli natomiast stwierdzimy zgodność obu ciągów, to zapisujemy numer znaku z S, od którego wystąpiła zgodność.
+
+Uwagi do implementacji:
+
+Wczytywanie tekstu - przydatna składnia:
+
+with open("lotr.txt", encoding='utf-8') as f:
+        text = f.readlines()
+
+S = ' '.join(text).lower()
+
+W trzeciej linijce następuje łączenie listy w jeden ciąg znakowy oraz konwersja do małych liter.
+
+Konwencja - proszę indeks w S oznaczyć m, a w W jako i. Pomoże to przy implementacji kolejnych metod.
+Używamy pętli while a nie for (ze względu na kolejne zadanie)
+Od razu dodajemy mierzenie dwóch parametrów:
+         a) czasu wykonania:
+
+         import time
+
+         t_start = time.perf_counter()
+         # testowana metoda
+         t_stop = time.perf_counter()
+         print("Czas obliczeń:", "{:.7f}".format(t_stop - t_start))
+        
+         b) liczby podstawowych operacji (tu: porównań znaków) - tu proszę dobrze umiejscowić inkrementację licznika.
+
+Algorytm oczywiście warto “opakować” w funkcję.
+
+Testujemy jego działanie dla prostego tekstu - wybranego samodzielnie. 
+
+Następnie w wersji finalnej dla tekstu  "lotr.txt" i wzorca "time." proszę wypisać trzy wartości rozdzielone średnikami: liczbę wystąpień wzorca; liczbę porównań znaków, czas obliczeń. UWAGA: we wzorcu występuje kropka!
+
+Uwaga. Istnieje ulepszony wariant metody naiwnej, który pozwala zmniejszyć liczbę porównań, ale tylko w przypadku, gdy we wzorcu nie ma powtórzeń.
+
+3.  Metoda Rabina-Karpa
+
+Idea polega na wykorzystaniu funkcji skrótu (haszującej, mieszającej). Założenia są następujące:
+jeśli W i podciąg z S są identyczne, to mają taki sam skrót (czyli wartość funkcji mieszającej) i występuje dopasowanie,
+
+jeśli W i podciąg z S są różne, to skrót prawie zawsze różny => jednak może się trafić przypadek, że będzie taki sam, stąd konieczność testowania dopasowań.
+
+Bazujemy na następującym pseudokodzie (Źródło: Wiki):
+function RabinKarp(string S[1..M], string W[1..N])
+
+    hW := hash(W[1..N]);
+
+    for m from 1 to M-N+1
+
+            hS := hash(S[m..m+N-1])
+
+            if hS = hW
+
+                if S[m..m+N-1] = W[1..N]
+
+                    return m
+
+        return not found
+
+Wyliczamy skrót W, następnie w pętli wyliczamy skrót podciągu S i porównujemy oba skróty. Jeśli są takie same, to musimy jeszcze porównać ciągi, aby sprawdzić, czy nie mamy do czynienia z błędem wynikającym z kolizji. Proszę zaimplementować powyższy algorytm, zamieniając stosowane tu indeksowanie od 1 na od 0 oraz przyjmując:
+
+
+d = 256 
+
+q = 101  # liczba pierwsza
+
+def hash(word):
+    hw = 0
+    for i in range(N):  # N - to długość wzorca
+        hw = (hw*d + ord(word[i])) % q  # dla d będącego potęgą 2 można mnożenie zastąpić shiftem uzyskując pewne przyspieszenie obliczeń
+    return hw
+
+Następnie proszę porównać czas działania i liczbę porównań z metodą naiwną. Jako podstawową operację proszę przyjąć porównywanie wartości funkcji hash.
+
+Na koniec w wersji finalnej dla tekstu  ‘lotr.txt’ i wzorca "time." proszę wypisać cztery wartości rozdzielone średnikami: liczbę wystąpień wzorca; liczbę porównań znaków; liczbę kolizji; czas obliczeń stosując początkowe 101 jako liczba pierwsza.
+
+Można zauważyć, że wartość funkcji has dla dwóch kolejnych podciągów z S różni się tylko o wartości zależne od pierwszej litery pierwszego podciągu i ostatniej drugiego. Podana metoda liczenia funkcji hash ma jednak jedną 'miłą' cechę - je wartość dla drugiego podciągu można także wyliczyć bez wywoływania jej na drugim podciągu (ma ona tzw. własność 'rolling hash'). Wystarczy wziąć jej wartość dla pierwszego podciągu i odjąć wartość zależną od pierwszej litery pierwszego a dodać wartość zależną od ostatniej drugiego, wg wzoru:
+
+hash(S[m+1..m+N]) = (d * (hash(S[m..m+N-1]) - ord(S[m]) * h) + ord(S[m + N])) % q
+
+jeżeli wartość wyjdzie ujemna należy dodać do niej q.
+
+W powyższym wzorze występuje wartość h, którą wylicza się raz, przed wyszukiwaniem wzorca:
+h = 1
+for i in range(N-1):  # N - jak wyżej - długość wzorca
+    h = (h*d) % q 
+
+Proszę porównać czas działania i liczbę porównań z poprzednimi (tymi bez 'rolling hash').
+Proszę poeksperymentować z użytą liczbą pierwszą oraz dodać zliczanie sytuacji, w których ten sam skrót oznaczał różne ciągi.
+
+Na koniec w wersji finalnej dla tekstu  ‘lotr.txt’ i wzorca "time." proszę wypisać cztery wartości rozdzielone średnikami: liczbę wystąpień wzorca; liczbę porównań znaków; liczbę kolizji; czas obliczeń stosując początkowe 101 jako liczba pierwsza.

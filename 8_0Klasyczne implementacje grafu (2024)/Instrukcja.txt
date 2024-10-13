@@ -1,0 +1,59 @@
+Celem ćwiczenia jest zaimplementowanie dwóch najpopularniejszych reprezentacji grafów - macierzy sąsiedztwa i listy sąsiedztwa.
+Implementacja macierzy sąsiedztwa powinna bazować na naszym pierwszym ćwiczeniu implementującym tablicę 2D
+Implementacja listy sąsiedztwa powinna być zrealizowana jako słownik słowników.  W tym wypadku graf to będzie słownik, który dla każdego węzła pamięta listę jego sąsiadów (również będącą słownikiem, który dla każdego sąsiada pamięta krawędź łączącą go z danym węzłem). Czyli dodanie węzła  to po prostu dodanie do słownika węzły  pustego słownika sąsiadów: węzły[węzeł] = { }, a dodanie krawędzi to dodanie jej do odpowiedniego słownika sąsiadów: węzły[węzeł1][węzeł2] = krawędź
+
+
+
+
+Postaramy się stworzyć jeden wspólny interfejs dla obu implementacji.
+
+Klasy implementujące grafy powinny mieć następujące metody:
+   konstruktor - tworzący pusty graf
+    is_empty( ) - zwracająca True jeżeli graf jest pusty
+    insert_vertex(vertex)    - wstawia do grafu  podany węzeł
+    insert_edge(vertex1, vertex2, egde) - wstawia do grafu krawędź pomiędzy podane węzły
+    delete_vertex(vertex) - usuwa podany węzeł
+    delete_edge(vertex1, vertex2) - usuwa krawędź pomiędzy podanymi węzłami       
+
+Ponadto do poruszania się po grafie przydatne będzie uzyskanie sąsiadów każdego z węzłów. Tutaj musimy wprowadzić rozróżnienie pomiędzy informacją o węźle (vertex) a jego identyfikatorem w implementacji (vertex_id). Węzły mogą być identyfikowane po numerach (indeksach w liście węzłów) lub po wybranej danej (kluczu).
+Uzyskiwanie sąsiadów najlepiej będzie zaimplementować jako iterator tak, aby móc wykorzystać go w pętlach. W każdym obiegu powinna być generowana para (vertex_id, edge). Niech w naszym interfejsie będzie to zaimplementowane pod nazwą neighbours:
+    neighbours(vertex_id) -  dla węzłów przyległych do węzła identyfikowanego przez vertex_id generuje listę par (vertex_id, edge)
+Drugim przydatnym iteratorem będzie iterator zwracający wszystkie identyfikatory węzłów. Niech w naszym interfejsie będzie to zaimplementowane pod nazwą vertices:
+   vertices() - generuje listę węzłów grafu (a w zasadzie ich id)
+
+Jeżeli lista sąsiedztwa zostanie zaimplementowana  na słowniku słowników to identyfikatorem węzła mógłby być wybrany klucz, ale możemy to zrobić lepiej - identyfikatorem węzła może być on sam. Aby móc używać węzła jako 'indeks' słownika wystarczy w węźle zaimplementować metodę __hash__ :
+    def __hash__(self):
+        return hash(self.key)
+
+Implementacja metod  vertices i neighbours będzie tu trywialna. vertices  zwraca keys(), a neighbours zwraca items() dla odpowiednich słowników.
+
+Sprawa macierzą sąsiedztwa jest trudniejsza, gdyż węzły są identyfikowane przez indeksy tablicy 2D (to będzie ich id). Natomiast sama informacja o węzłach musi być przechowywana osobno w liście węzłów o indeksach zgodnych z numerami wierszy macierzy.   Iteratory
+vertices i neighbours trzeba samemu zaimplementować  (najlepiej w formie generatorów), przy czym  vertices będzie po prostu zwracał kolejne numery od 0 do liczba_węzłów - 1.
+Aby móc w jednym interfejsie obsługiwać zarówno listę sąsiedztwa jak i macierz sąsiedztwa konieczna będzie jeszcze jedna metoda - uzyskująca informację o węźle z jego id (np. w celach wypisania grafu). Niech ta metoda nazywa się get_vertex:
+ get_vertex(vertex_id) -- zwraca informację o węźle
+W implementacji macierzy sąsiedztwa ta metoda powinna z listy węzłów zwrócić węzeł o indeksie vertex_id
+Natomiast w  implementacji listy sąsiedztwa ta metoda powinna zwrócić vertex_id (czyli być tożsamościowa), gdyż tu węzeł jest swoim identyfikatorem!
+Implementacja macierzy sąsiedztwa wymaga także odwrotnej operacji - uzyskania id z węzła. Optymalnym rozwiązaniem byłoby zastosowanie tu dodatkowego słownika, ale jego 'obsługa' byłaby trochę skomplikowana podczas usuwania węzłów (w zasadzie słownik trzeba by odtworzyć na nowo). Dlatego dla uproszczenia można przyjąć, że id (czyli indeks) jest wyszukiwane po kluczu w liście węzłów. Aby uniezależnić się od nazwy pola z kluczem należy w węźle umieścić metodę __eq__ która zdefiniuje na czym polega porównanie dwóch węzłów.  
+
+Podsumowując:
+ Zadbamy o to, żeby graf nie musiał znać wewnętrznej reprezentacji węzła (czyli nie musi wiedzieć CO w grafie jest przechowywane, ma wiedzieć JAK jest to powiązane ze sobą). Dlatego węzeł powinien być opisany osobną klasą, która ma jedynie przechowywać dane. Jedna z tych danych będzie kluczem jednoznacznie identyfikującym węzeł.
+Aby uniezależnić implementację grafu od klasy opisującej węzeł proszę w klasie opisującej węzeł umieścić metody:
+__eq__ (porównującą węzły wg klucza - czyli wybranego pola identyfikującego węzeł) oraz __hash__ (wykorzystywaną przez słownik, zwracająca klucz).  Ponadto proszę o metodę __str__ która dziś ma zwracać klucz (literę reprezentującą województwo - patrz opis poniżej)
+
+Dzisiaj krawędziom nie będą towarzyszyły żadne dane, ale musimy przewidzieć taką możliwość na przyszłość. W macierzy sąsiedztwa jako edge w insertEdge będzie wstawiane 1, choć ogólnie może to być dowolny obiekt. Natomiast proponuję, aby konstruktor miał dodatkowy parametr określający jaką wartością zainicjować macierz - jej wartość domyślna niech wynosi 0, ale warto mieć możliwość innej inicjacji np. wartością None.
+W liście sąsiedztwa  jako edge proszę dziś umieszczać w słowniku None-y.
+
+I jeszcze przypomnienie na koniec:
+Przy usuwaniu węzła należy pamiętać, że  trzeba go usunąć ze wszystkich słowników sąsiadów i z listy węzłów. 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+W ćwiczeniu należy stworzyć graf odwzorowujący sąsiedztwa polskich województw. Jako dane początkowe udostępniona jest mapa Polski (https://fotoomnia.com/photo/Mapa-Konturowa-659 - przeskalowana) oraz plik polska.py KTÓREGO NIE NALEŻY UZUPEŁNIAĆ/MODYFIKOWAĆ. Pracę zaczynamy od utworzenia własnego pliku w którym umieszczamy import polska. Plik polska.py zawiera reprezentację grafu sąsiedztwa województw w postaci listy krawędzi (pod nazwą graf). Daną przechowywaną w węzłach są pierwsze litery tablic rejestracyjnych danego województwa (to będą klucze identyfikujące węzły). Ponadto kod zawiera funkcję wyświetlającą graf na mapie  - draw_map - która powinna dostać graf jako argument (jak działa funkcja można szybko sprawdzić wołając polska.draw_map(polska.graf)). 
+
+UWAGA - dziś uruchamia się środowisko graficzne w którym powinny pojawić się 2 okna - okno z mapą i konsola. Mogą wystąpić problemy typu:
+ - nie widać konsoli - prawdopodobnie przysłania ją okno grafu.
+ - przez dłużej niż 10 sekund nic się nie pokazuje (niebieski pusty ekran) - kliknięcie powinno spowodować wyświetlenie konsoli z komunikatem błędu.
+
+Państwa zadaniem jest stworzenie grafów w obu implementowanych reprezentacjach i wykonanie na nich podanych niżej operacji. Ponieważ interfejsy obu klas są identyczne, więc kod testujący powinien być wspólny dla obu grafów.
+Na początek należy stworzyć graf korzystając z podanej listy krawędzi (z użyciem metod insert_vertex i insert_edge).
+Następnie należy usunąć z grafu województwo małopolskie (delete_vertex) oraz połączenia między mazowieckim i łódzkimi (delete_edge).
+Poprawność należy sprawdzić przez wyświetlenie stworzonych grafów (draw_map). 

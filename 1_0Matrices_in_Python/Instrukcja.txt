@@ -1,0 +1,58 @@
+Zaimplementuj w języku Python tablicę dwuwymiarową (macierz), do której dostęp będzie można zrealizować jak np. w języku C, czyli:
+nazwa_tablicy[nr_wiersza][nr_kolumny]
+Zaimplementowany typ danych powinien pozwalać na operacje dodawania (operatorem +)  i mnożenia, w znaczeniu mnożenia macierzowego (operatorem *)
+Wykorzystaj w tym celu klasę.  Dla przypomnienia - specjalne (tzw. magiczne) metody definiujące odpowiednie operatory to:
+__add__ - definiuje +
+__mul__ - definiuje *
+__getitem__ - definiuje [ ]
+Dodatkowo proszę zapewnić możliwość wypisania macierzy (wierszami) przez funkcję print poprzez zdefiniowanie metody __str__ (sposób wypisania jest podany w przykładzie poniżej)
+
+Klasa powinna też mieć metodę size zwracającą liczbę wierszy i liczbę kolumn
+W operacjach dodawania i mnożenia proszę sprawdzać czy macierze mają odpowiednie rozmiary. Wynikiem tych operacji powinien być nowy obiekt.
+
+
+---------
+Przykładowy kod, który powinien zadziałać (przyjąwszy, że klasa nazywa się macierz):
+m1 = macierz(
+[ [1, 0, 2],
+  [-1, 3, 1] ]
+)
+
+m2 = macierz(
+[ [3, 1],
+  [2, 1],
+  [1, 0]]
+)
+
+print(m1*m2)
+---------
+Wynikiem wypisania m1 z powyższego przykładu (czyli wynik print(m1)) powinno być:
+| 1   0   2 |
+|-1   3   1 |
+
+
+Sama macierz może być reprezentowana w postaci listy list, przy czym pole wewnętrznie reprezentujące macierz  (czyli np. ta lista list) ma nie być  dostępne spoza klasy. 
+Należy zaimplementować 'konstruktor', który stworzy macierz (obiekt tworzonej klasy) na dwa sposoby:
+albo otrzyma on jako argument krotkę  zawierającą oba rozmiary macierzy 
+albo otrzyma wprost listę list wypełnioną wartościami.
+Można wykorzystać  isinstance do sprawdzenia czy argument jest typu tuple, a przeciwnym wypadku założyć, że 'konstruktor' otrzymał w argumencie poprawną listę list.
+Niech 'konstruktor' posiada także domyślny parametr (o wartości 0) wykorzystywany do wypełniania stałą wartością macierzy tworzonej przez podanie jej rozmiarów.
+
+Napisz osobną funkcję (NIE metodę klasy, aby nie korzystać z wewnętrznej reprezentacji macierzy) transponującą macierz. Niech ta funkcja otrzymuje macierz i zwraca macierz po transpozycji.
+
+W main-ie sprawdz działanie zaimplementowanej klasy przez stworzenie macierzy:
+| 1   0   2 |
+|-1   3   1 |
+
+ i wyświetlenie wyników następujących operacji:
+- transpozycja tej macierzy,
+- suma tej macierzy  z macierzą:
+| 1   1   1 |
+| 1   1   1 |
+utworzoną przez podanie rozmiarów macierzy (czyli drugim 'konstruktorem')
+- mnożenie tej macierzy przez macierz:
+| 3   1 |
+| 2   1 |
+| 1   0 |
+
+Proszę, aby w finalnej wersji programu nie wyświetlać nic poza powyższymi trzema macierzami wynikowymi (żadnych dodatkowych opisów ani komentarzy).

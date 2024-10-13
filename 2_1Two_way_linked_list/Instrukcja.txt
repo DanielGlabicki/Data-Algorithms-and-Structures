@@ -1,0 +1,9 @@
+Zmodyfikuj program z poprzedniego zadania tak, aby utworzyć listę wiązaną dwukierunkową z ogonem:
+- do klasy reprezentującej listę dodaj pole tail - wskazanie na ostatni element listy.
+- do klasy reprezentującej element listy dodaj pole prev - wskazanie na poprzedni element w liście
+ 
+Zmodyfikuj transformatory listy jednokierunkowej z poprzedniego zadania, tak aby uwzględnić pola tail i prev.
+
+Uwaga, tym razem aby usunąć całą listę nie wystarczy ustawić head na None ponieważ tym razem mamy cykliczne wskazania (element A wskazuje na element B, a element B na element A).
+
+Main powinien pozostać taki sam jak w poprzednim zadaniu.

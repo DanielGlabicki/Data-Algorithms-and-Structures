@@ -1,0 +1,47 @@
+Celem ćwiczenia jest implementacja dwóch metod sortowania - przez kopcowanie (ang. heapsort) oraz przez wybieranie (ang. selection sort).
+
+
+
+==============================
+
+
+
+1. Możliwym sposobem wykorzystania kopca do posortowania tablicy  jest  wstawienie danych z nieposortowanej tablicy do kopca, a następnie zdejmowanie ich z wierzchołka i wstawianie z powrotem  do tablicy, która w ten sposób zostanie posortowana.
+
+To podejście wymaga jednak dodatkowej pamięci na kopiec. W tym ćwiczeniu spróbujemy dokonać sortowania kopcowego w miejscu. Do tego wykorzystamy kod napisany w ćwiczeniu dotyczącym kolejki priorytetowej. Napisane do tej pory metody będą wymagały jedynie niewielkich zmian.
+
+Zaczniemy od uzupełnienia konstruktora klasy reprezentującej kopiec o parametr zawierający listę elementów do posortowania (jako parametr z wartością domyślną None). Jeżeli konstruktor zostanie zawołany z argumentem powinien on z przekazanej listy utworzyć kopiec. Robimy to następująco:
+
+Już powinniśmy dysponować metodą naprawiającą kopiec przesuwającą korzeń w dół drzewa (używaną w dequeue). Jeżeli, wbrew instrukcji, ktoś nie wydzielił tej metody w zadaniu z kolejką priorytetową, musi to zrobić teraz.
+Wydzieloną metodę wystarczy wywołać dla wszystkich węzłów nie będących liśćmi, co spowoduje ich przesunięcie we właściwe miejsce kopca. Należy jednak zachować kolejność: od ostatniego elementu, który nie jest liściem (czyli rodzica ostatniego elementu tablicy), aż do korzenia. Ta metoda działa w czasie O(N).
+
+Sortowanie zostanie wykonane przez 'rozebranie' kopca, czyli usuniecie z niego wszystkich elementów. W zasadzie już mamy kod, który to realizuje - usuwając korzeń przemieszczamy go na ostatnią pozycję w kopcu (a ostatni element jest przemieszczany w jego miejsce). Jednakże osoby, które fizycznie usuwały z tablicy ostatni, przeniesiony z root-a) element (np. metodą pop) muszą teraz przerobić swój program - należy  tak zmodyfikować metodę dequeue, żeby nie usuwała ostatniego elementu, a rozmiar kopca nie może zależeć od rozmiaru tablicy (musi być 'ręcznie' zwiększany  w enqueue i zmniejszany w dequeue).
+Bez fizycznego usuwania  po 'rozebraniu'  kopca dostaniemy posortowaną tablicę (jeżeli kopiec był kopcem maksymalnym to uzyskamy tablicę posortowaną rosnąco - na końcu wyląduje element największy, potem coraz mniejsze). 
+
+W main-ie niech dana będzie lista z danymi:
+ [(5,'A'), (5,'B'), (7,'C'), (2,'D'), (5,'E'), (1,'F'), (7,'G'), (5,'H'), (1,'I'), (2,'J')]
+Stwórz na jej podstawie listę (tablicę), której elementy są obiektami utworzonej na poprzednich zajęciach klasy.
+Przykładowo może to być instrukcja:
+[ Elem(key, value) for key,value in  [(5,'A'), (5,'B'), (7,'C'), (2,'D'), (5,'E'), (1,'F'), (7,'G'), (5,'H'), (1,'I'), (2,'J')]]
+Przekaż tak utworzoną tablicę jako parametr konstruktora przy tworzeniu kopca.
+Wypisz utworzony kopiec jako tablicę i jako drzewo 2D, a następnie, po rozebraniu kopca, wypisz posortowaną tablicę (tą którą kopiec dostał jako argument przy jego tworzeniu). Zaobserwuj i wypisz, czy sortowanie jest stabilne, tzn. czy kolejność elementów o tym samym priorytecie zostanie zachowana (w porównaniu z ich kolejnością w liście z danymi).
+
+
+Drugi test: Wygeneruj losowo 10000 liczb w przedziale od 0 do 99 i wpisz je do tablicy. Posortuj tę tablicę przez stworzenie i rozebranie kopca. Wypisz czas sortowania takiej tablicy. W celu realizacji tego zadania  należy zaimportować moduły random i time.  Do generowania liczb można wykorzystać zapis int(random.random() * 100) powodujący wylosowanie liczby całkowitej z zakresu 0-99, natomiast do pomiaru czasu można zaadaptować kod:
+
+t_start = time.perf_counter()
+# testowana metoda
+t_stop = time.perf_counter()
+print("Czas obliczeń:", "{:.7f}".format(t_stop - t_start))
+
+==============================
+
+2. Drugim algorytmem do zrealizowania jest sortowanie przez wybieranie.
+
+ Napisz dwie metody sortujące pythonową listę algorytmem przez wybieranie: jedną, wykorzystującą zamianę miejscami elementów (swap), i drugą, wykorzystującą przesunięcie elementów (shift). W tym drugim wypadku shift można osiągnąć przez pop i insert.
+
+Analogicznie jak w poprzednim punkcie z listy: [(5,'A'), (5,'B'), (7,'C'), (2,'D'), (5,'E'), (1,'F'), (7,'G'), (5,'H'), (1,'I'), (2,'J')] stwórz  tablicę elementów i posortuj ją. Zaobserwuj stabilność (lub jej brak)  obu wersji algorytmu sortującego.
+
+Drugi test: Wygeneruj losowo 10000 liczb w przedziale od 0 do 99, którymi wypełnisz tablicę. Wypisz czasy sortowania takiej tablicy I porównaj z czasem sortowania kopcowego.
+
+UWAGA - dla każdego sortowania potrzebna jest osobna kopia tablicy, gdyż są to sortowania 'in situ'.

@@ -1,0 +1,26 @@
+Segmentacja - zastosowanie dla prostego obrazu
+Pomysł segmentacji z wykorzystaniem MST polega na wyszukaniu w drzewie krawędzi o największej wadze oraz jej usunięciu. Wtedy uzyskamy dwa odrębne drzewa, o potencjalnie różnych właściwościach. Zademonstrujemy to na bardzo prostym przykładzie obrazu binarnego sample.png, ponieważ działanie metody na obrazach rzeczywistych nie jest “oczywiste”.
+
+(sample)
+
+Implementacja (wymaga zainstalowania biblioteki openCV):
+
+tworzymy pusty graf i wczytujemy obraz (przykładowo: I = cv2.imread('sample.png',cv2.IMREAD_GRAYSCALE)),
+
+dla każdego piksela (wierzchołka) dodajemy do grafu krawędzie łączące go z wszystkimi  8-ma sąsiednimi pikselami (wierzchołkami).  Dla uproszczenia można pominąć piksele brzegowe (choć jak ktoś “ma zacięcie”, to proszę zbudować pełną reprezentację). Kluczem wierzchołka (piksela) niech będzie jego indeks w obrazie:  XX*j+i, gdzie XX - szerokość obrazu (liczba kolumn), a  j oraz i to współrzędne piksela. Wagą każdej krawędzi ma być modułu z różnicy jasności pikseli 'incydentnych'.
+
+wykonujemy drzewo MST metodą Prima,
+
+znajdujemy i usuwamy krawędź o najwyższej wadze w całym drzewie,
+
+wizualizujemy oba drzewa (ich korzeniami będą wierzchołki incydentne usuniętej krawędzi):
+
+tworzymy macierz (obraz wynikowy) (przykładowo: IS = np.zeros((YY,XX),dtype='uint8') )
+
+implementujemy prostą trawersację grafu - np. z wykorzystaniem stosu, kolejki lub rekurencyjną  (nie ma to większego znaczenia w tym przypadku),
+
+uruchamiamy przejścia po obu drzewach - zaczynamy od wierzchołków, które łączyła usunięta krawędź. Niech każde przeszukanie 'pokoloruje' piksele odpowiadające odwiedzanym wierzchołkom jednym 'kolorem' (proszę jako 'kolor' ustalić dwa poziomy szarości - np. 100 i 200)
+
+z “napotkanych” wierzchołków odczytujemy współrzędne piksela (y = klucz//XX, x = klucz % XX) i pod te współrzędne wpisujemy "kolor" do obrazu wyjściowego
+
+obraz wyświetlamy (przykładowo: cv2.imshow("Wynik",IS) oraz cv2.waitKey() )

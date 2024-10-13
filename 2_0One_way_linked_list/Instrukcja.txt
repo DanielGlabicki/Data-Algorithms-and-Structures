@@ -1,0 +1,54 @@
+Do wiązania kolejnych elementów w liście jednokierunkowej w języku C naturalnym jest użycie wskaźnika. Czym można zastąpić wskaźnik w języku Python? Być może zaskakującą odpowiedzią jest: dowolną zmienną (czy polem klasy). Pamiętajmy, że 'zmienne' w Pythonie to swego rodzaju 'etykietki' 'przyklejane' do komórek pamięci w praktyce realizowane jako referencje. Tak więc każda zmienna w Pythonie jest rodzajem wskaźnika. Załóżmy, że mamy klasę z polami:
+- data (które możemy to rozumieć jako referencję do danych przechowywanych w liście)
+- next (które możemy to rozumieć jako referencję do następnego elementu listy)
+Wtedy instrukcję:
+element.data = ('Piotr', 'Pawlik')
+można rozumieć nie jako wstawienie do pola data informacji o osobie, ale jako spowodowanie, że pole data wskazuje na informację o osobie.
+Analogicznie (co istotniejsze):
+element.next = nast_element to nie wstawienie elementu do elementu tylko ustawienie next jako wskazanie na następny element.
+
+Właściwe zadanie:
+Zaimplementuj w języku Python listę wiązaną jednokierunkową. Niech będzie ona zaimplementowana jako klasa zawierająca pole head.
+Pole head należy rozumieć jako wskazanie na pierwszy element listy (należy stworzyć drugą , osobną, klasę reprezentującą elementy listy majacą 2 pola: data i next -  tak jak we Wstępie). Pole to powinno być ustawiane w 'konstruktorze' na None (czyli konstruktor będzie odpowiednikiem funkcji tworzącej pustą listę).
+
+Zaimplementuj poniższe funkcjonalności:
+Transformatory:
+• create - tego nie trzeba implementować - tę rolę będzie pełnił 'konstruktor' tworzący obiekt reprezentujący listę z polem head ustawionym na None
+• destroy - usunięcie/zniszczenie całej listy - tu też jest łatwo - wystarczy ustawić head na None, a Python sam zwolni pamięć :)
+• add - metoda dodająca na początek listy (jako argument ma dostać dane, które wstawi do pola data tworzonego przez tę funkcję elementu listy)
+• append - metoda dodająca na koniec listy (argument taki sam jak w add)
+• remove - metoda usuwająca element z początku listy
+• remove_end - metoda usuwająca element z końca listy
+Obserwatory:
+• is_empty - metoda zwracająca True dla pustej listy
+• length - metoda zliczająca liczbę elementów
+• get - metoda zwracająca pierwszy element (tylko dane, bez 'wskaźnika' - wewnętrzna reprezentacja ma być ukryta)
+
+ a także metodę pozwalającą wypisać listę. Niech dla poniższych danych wypisanie wygląda tak:
+-> ('PW', 'Warszawa', 1915)
+-> ('UJ', 'Kraków', 1364)
+-> ('AGH', 'Kraków', 1919)
+itd.
+
+W main-ie mamy daną pythonową listę z danymi o uczelniach:
+[('AGH', 'Kraków', 1919),
+('UJ', 'Kraków', 1364),
+('PW', 'Warszawa', 1915),
+('UW', 'Warszawa', 1915),
+('UP', 'Poznań', 1919),
+('PG', 'Gdańsk', 1945)]
+Używając tej listy:
+- utwórz listę wiązaną (nazwijmy ją uczelnie) z pierwszych 3 uczelni używając dodawania na koniec
+- dołącz do listy wiązanej kolejne uczelnie używając dodawania na początek listy
+- wypisz listę
+- wypisz długość listy
+- usuń z listy pierwszy element
+- wypisz pierwszy element z listy (ten po usuniętym poprzednio)
+- usuń z listy ostatni element
+- wypisz listę
+- usuń całą listę uczelnie metodą destroy i wypisz wynik is_empty dla usuniętej listy
+- wywołaj usuwanie pierwszego elementu z listy (na pustej liście)
+- wywołaj usuwanie ostatniego elementu z listy (na pustej liście)
+- dodaj ponownie AGH do listy używając dodawania na koniec
+- wywołaj usuwanie ostatniego elementu z listy
+- wypisz wynik is_empty
